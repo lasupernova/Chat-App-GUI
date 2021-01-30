@@ -22,7 +22,7 @@ class Messenger(tk.Tk):
     # ----- aestetics -----
 
         # set custom taskbar icon
-        self.iconphoto(False, tk.PhotoImage(file=f"Media{os.sep}chat_icon.png")) 
+        self.iconphoto(False, tk.PhotoImage(file=f'Media{os.sep}chat_icon.png')) 
 
         # set title
         self.title("Chat App")
