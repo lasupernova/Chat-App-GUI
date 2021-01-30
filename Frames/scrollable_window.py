@@ -20,7 +20,7 @@ class MessageWindow(tk.Canvas):
     # ----- Frames -----
 
         # create new Frame object in Canvas and configure
-        self.message_frame = ttk.Frame(self)
+        self.message_frame = ttk.Frame(container)#, style = "Messages.TFrame")
         self.message_frame.columnconfigure(0, weight=1)
 
         # make self.message_frame a window within the Canvas (=self) and configure
@@ -83,7 +83,7 @@ class MessageWindow(tk.Canvas):
     def _create_message_container(self, message_content, message_time, message_labels):
 
         # create a container to display current message and date in 
-        container = ttk.Frame(self.message_frame)
+        container = ttk.Frame(self.message_frame)#, style="Messages.TFrame")
 
         # configure second column to expand and take up available space
         container.columnconfigure(1, weight=1)
@@ -119,7 +119,8 @@ class MessageWindow(tk.Canvas):
         # create Label to display user image
         image_label = ttk.Label(
             container,
-            image=user_photo
+            image=user_photo,
+            style="Avatar.TLabel"
         )
         image_label.image = user_photo #persist image.label --> without this step, the image will be deleted from image_label and will not be shown
         image_label.grid(row=0, column=0, rowspan=2, sticky="NEW", padx=(0,10), pady=(5,0))
@@ -127,7 +128,8 @@ class MessageWindow(tk.Canvas):
         # create new lable per new message
         time_label = ttk.Label(
                         container,
-                        text=message_time
+                        text=message_time,
+                        style="Time.TLabel"
                         )
 
         # add current label to message_frame
@@ -140,7 +142,8 @@ class MessageWindow(tk.Canvas):
                         text=message_content, #get text from current message
                         anchor="w",
                         justify="left",
-                        wraplength= container.winfo_width() - 120 #wrap text specified container width (-120 for padding etc.)
+                        wraplength= container.winfo_width() - 120, #wrap text specified container width (-120 for padding etc.)
+                        style="Message.TLabel"
                         )
 
         # add current label to message_frame

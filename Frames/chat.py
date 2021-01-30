@@ -14,8 +14,8 @@ message_labels = []
 # ----- Chat Frame Class -----
 
 class Chat(ttk.Frame):
-    def __init__(self, container, **kwargs):
-        super().__init__(container, **kwargs)
+    def __init__(self, container, background, **kwargs):
+        super().__init__(container, **kwargs) #NOTE: canvans (=self) does not have a style becasue it is a tk-object, not a ttk-object
 
     # ----- Form -----
 
@@ -30,7 +30,7 @@ class Chat(ttk.Frame):
         # ----- Frames -----
 
         # initiate frames
-        self.message_window = MessageWindow(self) #class creates a Canvas harboring a "scrollable" Frame-object
+        self.message_window = MessageWindow(self, background=background) #class creates a Canvas harboring a "scrollable" Frame-object
         input_frame =ttk.Frame(self, padding=10)
 
         self.message_input = tk.Text(input_frame, height=4) #height in rows of text
@@ -43,8 +43,8 @@ class Chat(ttk.Frame):
         # ----- Buttons -----
 
         # initiate buttons
-        fetch_message = ttk.Button(input_frame, text="Fetch", command=self.get_messages)
-        submit_message = ttk.Button(input_frame, text="Send", command=self.post_message)
+        fetch_message = ttk.Button(input_frame, text="Fetch", command=self.get_messages, style="FetchButton.TButton")
+        submit_message = ttk.Button(input_frame, text="Send", command=self.post_message, style="SendButton.TButton")
 
         # place buttons
         fetch_message.pack() #NOTE: .pack() and .grid() can be used together in the same application but not within the same frame
