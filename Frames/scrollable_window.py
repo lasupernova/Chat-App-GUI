@@ -9,6 +9,9 @@ import datetime
 from PIL import Image, ImageTk
 import os
 
+# ----- Custom Variables -----
+MAX_MESSAGE_WIDTH = 950
+
 # ----- class creating scrollable Canvas window -----
 class MessageWindow(tk.Canvas):
     def __init__(self, container, *args, **kwargs):
@@ -74,6 +77,8 @@ class MessageWindow(tk.Canvas):
         print("All messages displayed!")
 
 
+
+
     # private method creating message container 
     def _create_message_container(self, message_content, message_time, message_labels):
 
@@ -88,6 +93,17 @@ class MessageWindow(tk.Canvas):
 
         # call method to create/insert actual content to be displayed into container
         self._create_message_bubble(container, message_content, message_time, message_labels)
+
+        # function re-sizing label containing etxt automatically upon window-resize
+        def resize_message_labels(event):
+            for label, _ in message_labels:
+                # get contoiner length in pixels (minus 120 to account for user_photo, padding etc)
+                container_width = container.winfo_width() - 120
+                # re-configure label-wraplength upon event
+                label.configure(wraplength=min(container_width, MAX_MESSAGE_WIDTH))
+        
+        # bind resize_message_label-function to Container-configuration events
+        container.bind("<Configure>", resize_message_labels)
 
 
     # -----private method inserting content to be displayed to container-----
@@ -124,7 +140,7 @@ class MessageWindow(tk.Canvas):
                         text=message_content, #get text from current message
                         anchor="w",
                         justify="left",
-                        wraplength="1000" #wrap text at 900 pixels of text-width
+                        wraplength= container.winfo_width() - 120 #wrap text specified container width (-120 for padding etc.)
                         )
 
         # add current label to message_frame
