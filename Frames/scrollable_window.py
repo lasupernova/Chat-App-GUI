@@ -33,9 +33,10 @@ class MessageWindow(tk.Canvas):
             # set Canvas size (width) to scrollable_window width
             self.itemconfig(self.scrollable_window, width=self.winfo_width())
 
-        # trigger <Configure> event whenever the scrollable_frame size changes
+        # trigger scrolling depending on what is done in window (e.g. moving scrollbar or turning mousewheel)
         self.bind("<Configure>", configure_window_size)
         self.message_frame.bind("<Configure>", configure_scroll_region) 
+        self.bind_all("<MouseWheel>", self._on_mousewheel) #use .bind_all() because function should be triggered, no matter what widget/object is currently selected
 
         # create Scrollbar object and place
         scrollbar = ttk.Scrollbar(container, orient="vertical",command=self.yview)
@@ -50,7 +51,11 @@ class MessageWindow(tk.Canvas):
 
     # ------ Methods -----
 
-       # method printing new messages to message_frame
+    # internal method, activating scrolling when mouse wheel is turned
+    def _on_mousewheel(self, event):
+        self.yview_scroll(-int(event.delta/120), "units")
+
+       # method, printing new messages to message_frame
     def message_update_widget(self, messages, message_labels):
 
         # save already displayed message texts and dates in list, NOTE: message_labels stores ttk.Label-objects (one for message-text and one for the message-datetime per message) - the text stored within these objects is stored in the list
