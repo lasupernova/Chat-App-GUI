@@ -13,6 +13,9 @@ class Messenger(tk.Tk):
         # set size
         self.geometry("1200x500")
 
+        # set minimum size
+        self.minsize(400, 300)
+
         # set column weight
         self.columnconfigure(0, weight=1)
 
